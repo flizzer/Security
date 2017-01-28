@@ -1,9 +1,9 @@
 $pathToCSVFile = "GrizzlySteppeConnections.csv"
-$ipAddresses = get-content -path $pathToCSVFile | select-object -skip 1
-foreach ($ipAddress in $ipAddresses)
+$remoteHosts = get-content -path $pathToCSVFile | select-object -skip 1
+foreach ($remoteHost in $remoteHosts)
 {
-    $ipAddressClean = $ipAddress -replace "\[","" -replace "\]","" -replace ",",""
-    write-host "Connections for $ipAddressClean..."
-    $netstatCommand =  netstat -an | Select-String $ipAddressClean
+    $remoteHostClean = $($remoteHost -replace "\[","" -replace "\]","" -replace ",","").Split("/")[0]
+    write-host "Connections for $remoteHostClean..."
+    $netstatCommand =  netstat -a | Select-String $remoteHostClean 
     Write-Host $netstatCommand
 }
